@@ -1,0 +1,88 @@
+<mxfile host="app.diagrams.net" modified="2026-01-27T00:00:00.000Z" agent="5.0" version="24.0.0" etag="drawio-er-asset-mortgage">
+  <diagram name="資產抵押作業 ER Model" id="er-diagram-asset-mortgage">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- 標題 -->
+        <mxCell id="title" value="資產抵押作業 ER Model" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="520" y="20" width="560" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 固定資產主表 -->
+        <mxCell id="fixed_assets" value="pc_fixed_assets (固定資產主表)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="280" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_fields" value="PK  id: bigint (主鍵)&#xa;UK  asset_number: varchar(50) 財產編號*&#xa;    asset_name: varchar(200) 財產名稱*&#xa;    asset_spec: varchar(500) 資產規格&#xa;FK  department_id: bigint 部門編號*&#xa;    extension: tinyint 抵押狀態&#xa;       1=未抵押 2=已抵押&#xa;    created_at: timestamp&#xa;    updated_at: timestamp&#xa;    deleted_at: timestamp&#xa;&#xa;【說明】&#xa;- 抵押狀態由抵押作業自動回寫&#xa;- 解除抵押時更新狀態" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="30" width="280" height="210" as="geometry" />
+        </mxCell>
+
+        <!-- 資產抵押作業表 -->
+        <mxCell id="mortgage" value="pc_asset_mortgage (資產抵押作業)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="500" y="100" width="300" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="mortgage_fields" value="PK  id: bigint (主鍵)&#xa;UK  mortgage_number: varchar(50) ERP抵押單號*&#xa;       (系統自動賦予,依OA3.0單據架構)&#xa;FK  asset_id: bigint 資產ID*&#xa;    asset_number: varchar(50) 財產編號*&#xa;    asset_name: varchar(200) 財產名稱 (唯讀)&#xa;    asset_spec: varchar(500) 資產規格 (唯讀)&#xa;FK  department_id: bigint 部門編號 (唯讀)&#xa;    mortgage_date: date 抵押日期*&#xa;    mortgage_bank: varchar(200) 抵押銀行&#xa;       (使用者手動輸入)&#xa;    mortgage_amount: bigint 抵押金額&#xa;       (只允許輸入正整數)&#xa;    status: tinyint 抵押狀態*&#xa;       1=抵押中 2=未抵押&#xa;    note: text 備註&#xa;    created_at: timestamp 建立時間&#xa;    updated_at: timestamp 更新時間&#xa;    deleted_at: timestamp 刪除時間&#xa;&#xa;【說明】&#xa;- 存檔時回寫資產基本檔抵押狀態=已抵押&#xa;- 解除合約時回寫資產基本檔抵押狀態=未抵押" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="mortgage">
+          <mxGeometry y="30" width="300" height="350" as="geometry" />
+        </mxCell>
+
+        <!-- OA部門主檔 -->
+        <mxCell id="departments" value="sc_departments (OA部門主檔)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="920" y="100" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="departments_fields" value="PK  id: bigint&#xa;    code: varchar(20) 部門編號&#xa;    name: varchar(100) 部門名稱&#xa;    created_at: timestamp&#xa;    updated_at: timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="departments">
+          <mxGeometry y="30" width="220" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- 業務規則說明 -->
+        <mxCell id="business_rules" value="【業務規則說明】" style="swimlane;fontStyle=1;align=left;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="400" width="700" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="business_rules_content" value="【作業目的】&#xa;建立固定資產抵押資料&#xa;&#xa;【基本區欄位說明】&#xa;◆ 財產編號:&#xa;  - 必填欄位&#xa;  - 可下拉選單or開窗查詢資產資料&#xa;  - 可用資產編號or資產名稱進行模糊搜尋&#xa;&#xa;◆ 資產名稱:&#xa;  - 唯讀欄位&#xa;  - 根據挑選出的財產編號帶出其對應資產名稱&#xa;&#xa;◆ 資產規格:&#xa;  - 唯讀欄位&#xa;  - 根據挑選出的財產編號帶出其對應資產規格&#xa;&#xa;◆ 部門編號:&#xa;  - 唯讀欄位&#xa;  - 根據挑選出的財產編號帶出其對應部門編號&#xa;&#xa;◆ ERP抵押單號:&#xa;  - 無法編輯,系統自動賦予&#xa;  - 編碼原則: 請依OA3.0單據架構設計(RD補充)&#xa;&#xa;◆ 抵押日期:&#xa;  - 必填欄位,萬年曆選單&#xa;&#xa;◆ 抵押銀行:&#xa;  - 使用者手動輸入&#xa;  - 例如: 台灣銀行、中國信託、玉山銀行等&#xa;&#xa;◆ 抵押金額:&#xa;  - 使用者手動輸入&#xa;  - 只允許輸入正整數&#xa;&#xa;◆ 抵押狀態:&#xa;  - 唯讀欄位&#xa;  - 存檔時=抵押中&#xa;  - 解除合約時=未抵押&#xa;&#xa;◆ 備註:&#xa;  - 使用者手動輸入&#xa;  - 可記錄抵押相關注意事項&#xa;&#xa;【資料處理】&#xa;◆ 按鈕_確定:&#xa;  - 當按下確定後,除了本身抵押單據存檔外,還需處理資產基本檔&#xa;  - 資產基本檔.抵押狀態需調整為已抵押&#xa;&#xa;◆ 按鈕_解除合約:&#xa;  - 當按下解除合約後,系統需跳出提示訊息:&#xa;    「解約後,抵押狀態將會更新,是否確認解約?」&#xa;  - 若點擊是,則直接作廢原本合約&#xa;  - 並將抵押狀態由已抵押更新為未抵押&#xa;&#xa;【OA列表欄位】&#xa;- 財產編號: 依資產基本資訊之財產編號&#xa;- 財產名稱: 依資產基本資訊之財產名稱&#xa;- ERP抵押單號: 依ERP抵押單號&#xa;- 抵押日期: 依投保單之投保日期&#xa;&#xa;【查詢條件】&#xa;- 財產編號: 可依財產編號模糊搜尋&#xa;- 財產名稱: 可依財產名稱模糊搜尋&#xa;- ERP抵押單號: 依ERP抵押單號&#xa;- 抵押日期(起): 依投保單之抵押日期&#xa;- 抵押日期(迄): 依投保單之抵押日期&#xa;&#xa;【欄位驗證規則】&#xa;- 財產編號: 必填&#xa;- 抵押日期: 必填,日期格式&#xa;- 抵押金額: 正整數&#xa;- ERP抵押單號: 系統自動產生,唯一值&#xa;&#xa;【業務限制】&#xa;- 已抵押的資產不能進行處置作業&#xa;- 已抵押的資產不能進行改良作業&#xa;- 已抵押的資產需先解除抵押才能進行其他異動" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="business_rules">
+          <mxGeometry y="30" width="700" height="470" as="geometry" />
+        </mxCell>
+
+        <!-- 關聯線 -->
+        <!-- fixed_assets -> mortgage -->
+        <mxCell id="rel1" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;" edge="1" parent="1" source="fixed_assets" target="mortgage">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel1_label" value="1 : N&#xa;抵押記錄" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel1">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- departments -> fixed_assets -->
+        <mxCell id="rel2" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="departments" target="fixed_assets">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="850" y="160"/>
+              <mxPoint x="850" y="160"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel2_label" value="1 : N&#xa;部門" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel2">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="-5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- departments -> mortgage -->
+        <mxCell id="rel3" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="departments" target="mortgage">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1030" y="195"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel3_label" value="1 : N&#xa;抵押部門" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel3">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="15" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

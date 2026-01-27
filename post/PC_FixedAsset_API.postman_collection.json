@@ -1,0 +1,485 @@
+{
+    "info": {
+        "name": "PC 財產管理系統 API",
+        "description": "財產管理系統的固定資產相關 API\n\n## 環境變數說明\n- `devUrl`: API 基礎網址 (預設: http://localhost:8000)\n- `jwtToken`: JWT 認證 Token (Bearer Token)\n- `assetId`: 資產ID (用於測試)\n- `assetNumber`: 財產編號 (用於測試)\n\n## 模組說明\nPC (Property Control) 財產管理模組提供完整的固定資產管理功能，包含：\n- 固定資產新增、修改、刪除、查詢\n- 異動記錄追蹤\n- 資產移轉作業\n- 折舊計算與管理\n- 資產處置作業\n- 編碼管理\n\n## 資料表關係\n- pc_fixed_assets: 固定資產主表\n- pc_asset_transaction_details: 異動記錄明細表\n- pc_asset_transfers: 資產移轉作業表\n- pc_depreciation_operations: 折舊作業表\n- pc_depreciation_datas: 折舊資料表\n- pc_asset_disposals: 資產處置作業表\n- pc_encoding_categories: 編碼類別表\n- pc_encoding_items: 編碼項目表\n- pc_encoding_rules: 編碼規則表",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "version": "2.0.0"
+    },
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{jwtToken}}",
+                "type": "string"
+            }
+        ]
+    },
+    "item": [
+        {
+            "name": "固定資產管理",
+            "item": [
+                {
+                    "name": "1. 取得固定資產列表",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets?page=1&perPage=15",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "頁碼"
+                                },
+                                {
+                                    "key": "perPage",
+                                    "value": "15",
+                                    "description": "每頁筆數 (使用 'all' 可取得全部)"
+                                }
+                            ]
+                        },
+                        "description": "## 取得固定資產列表\n\n**功能說明：** 取得固定資產分頁列表\n\n**查詢參數：**\n- `page`: 頁碼 (預設: 1)\n- `perPage`: 每頁筆數 (預設: 15)，設為 'all' 可取得全部資料"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "2. 搜尋固定資產",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets/search?keyword=電腦",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets",
+                                "search"
+                            ],
+                            "query": [
+                                {
+                                    "key": "keyword",
+                                    "value": "電腦",
+                                    "description": "搜尋關鍵字 (財產編號、名稱或規格)"
+                                }
+                            ]
+                        },
+                        "description": "## 搜尋固定資產\n\n**功能說明：** 根據關鍵字搜尋固定資產 (搜尋財產編號、財產名稱或規格)\n\n**查詢參數：**\n- `keyword`: 搜尋關鍵字 (必填)\n\n**使用範例：**\n- 搜尋電腦: `keyword=電腦`\n- 搜尋財產編號: `keyword=FA-2024`"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "3. 取得財產編號列表",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets/numbers/list?search=FA&limit=100",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets",
+                                "numbers",
+                                "list"
+                            ],
+                            "query": [
+                                {
+                                    "key": "search",
+                                    "value": "FA",
+                                    "description": "搜尋關鍵字 (選填)",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "100",
+                                    "description": "最多回傳筆數 (預設: 100)",
+                                    "disabled": true
+                                }
+                            ]
+                        },
+                        "description": "## 取得財產編號列表\n\n**功能說明：** 取得所有財產編號的列表 (用於下拉選單)\n\n**查詢參數：**\n- `search`: 搜尋關鍵字 (選填)\n- `limit`: 最多回傳筆數 (預設: 100)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "4. 根據財產編號查詢",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets/number?assetNumber=FA-2024-001",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets",
+                                "number"
+                            ],
+                            "query": [
+                                {
+                                    "key": "assetNumber",
+                                    "value": "FA-2024-001",
+                                    "description": "財產編號 (必填)"
+                                }
+                            ]
+                        },
+                        "description": "## 根據財產編號查詢\n\n**功能說明：** 根據財產編號查詢單筆資產詳細資料\n\n**查詢參數：**\n- `assetNumber`: 財產編號 (必填)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "5. 取得單筆固定資產",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets/{{assetId}}",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets",
+                                "{{assetId}}"
+                            ]
+                        },
+                        "description": "## 取得單筆固定資產\n\n**功能說明：** 根據ID取得單筆固定資產詳細資料\n\n**路徑參數：**\n- `id`: 資產ID (必填)\n\n**回應內容包含：**\n- 基本資料\n- 折舊資訊\n- 異動資訊\n- 保管人資訊\n- 部門資訊\n- 異動記錄明細"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "6. 新增固定資產 (完整)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"assetNumber\": \"FA-2024-001\",\n  \"assetName\": \"桌上型電腦\",\n  \"assetSpec\": \"Intel Core i7-12700, 16GB DDR4, 512GB NVMe SSD, Windows 11 Pro\",\n  \"unit\": \"台\",\n  \"supplier\": \"宏碁電腦股份有限公司\",\n  \"acquisitionDate\": \"2024-01-15\",\n  \"initialQuantity\": 3,\n  \"keeperId\": 1,\n  \"departmentId\": 1,\n  \"location\": \"資訊室-A棟3樓\",\n  \"acquisitionAmount\": 1,\n  \"acquisitionPrice\": 30000,\n  \"costNotDepreciated\": 30000,\n  \"mainAssetNumber\": \"FA-2024\",\n  \"subCategory\": \"電腦設備\",\n  \"budgetSource\": 1,\n  \"extension\": 0,\n  \"investment\": 0,\n  \"closeDate\": null,\n  \"depreciationCategory\": \"折舊費用-電腦設備\",\n  \"cumulativeDepreciationCategory\": \"累計折舊-電腦設備\",\n  \"startDate\": \"2024-02-01\",\n  \"usefulLifeMonths\": 60,\n  \"usedLifeMonths\": 0,\n  \"residualValueRate\": 10,\n  \"zero\": 0,\n  \"continued\": 0,\n  \"addAmount\": 0,\n  \"addDate\": null,\n  \"originalValue\": 0,\n  \"stockValue\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets"
+                            ]
+                        },
+                        "description": "## 新增固定資產 (完整範例)\n\n### 📋 必填欄位\n- `assetNumber`: 財產編號 (唯一值，字串50)\n- `assetName`: 財產名稱 (字串200)\n- `unit`: 單位 (字串20)\n- `acquisitionDate`: 取得日期 (格式: YYYY-MM-DD)\n- `initialQuantity`: 列管列帳類型 (tinyInteger: 1=列管, 2=列帳, 3=列管列帳)\n- `keeperId`: 保管人ID (bigInteger，關聯 sc_users)\n- `departmentId`: 部門ID (bigInteger，關聯 sc_departments)\n- `acquisitionAmount`: 取得數量 (bigInteger，固定為1)\n- `acquisitionPrice`: 取得成本 (bigInteger)\n- `mainAssetNumber`: 主財產類號 (字串50)\n\n### 📋 選填欄位\n**基本資料：**\n- `assetSpec`: 規格 (字串500)\n- `supplier`: 供應商/廠商 (字串50)\n- `location`: 存放地點 (字串200)\n- `costNotDepreciated`: 成本總額 (bigInteger，預設等於取得成本)\n- `subCategory`: 總帳科目 (字串50)\n- `budgetSource`: 預留殘值 (bigInteger)\n- `extension`: 抵押狀態 (tinyInteger)\n- `investment`: 投保狀況 (tinyInteger)\n- `closeDate`: 關帳年月 (date)\n\n**折舊相關：**\n- `depreciationCategory`: 折舊科目 (字串50)\n- `cumulativeDepreciationCategory`: 累計折舊科目 (字串50)\n- `startDate`: 開始提列年月 (date)\n- `usefulLifeMonths`: 耐用年限(月) (integer)\n- `usedLifeMonths`: 總用年限(月) (integer)\n- `residualValueRate`: 估前累計 (integer)\n- `zero`: 攤提至零日期 (integer)\n- `continued`: 續提月數 (integer)\n\n**異動相關：**\n- `addAmount`: 增添改良 (integer)\n- `addDate`: 增添日期 (date)\n- `originalValue`: 重估差價 (integer)\n- `stockValue`: 庫存數量 (integer，預設等於取得數量)\n\n### 🔗 外鍵關聯\n- `keeperId` → sc_users.id (保管人)\n- `departmentId` → sc_departments.id (部門)\n\n### 📝 欄位說明\n- **列管列帳類型 (initialQuantity)**:\n  - 1: 列管 - 僅登記管理，不入帳\n  - 2: 列帳 - 僅入帳\n  - 3: 列管列帳 - 同時登記管理與入帳\n- **取得數量 (acquisitionAmount)**: 通常固定為 1\n- **成本總額 (costNotDepreciated)**: 如未填寫，預設等於取得成本\n- **庫存數量 (stockValue)**: 如未填寫，預設等於取得數量"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "6. 新增固定資產 (最小必填)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"assetNumber\": \"FA-2024-002\",\n  \"assetName\": \"印表機\",\n  \"unit\": \"台\",\n  \"acquisitionDate\": \"2024-01-20\",\n  \"initialQuantity\": 1,\n  \"keeperId\": 2,\n  \"departmentId\": 1,\n  \"acquisitionAmount\": 1,\n  \"acquisitionPrice\": 8000,\n  \"mainAssetNumber\": \"FA-2024\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets"
+                            ]
+                        },
+                        "description": "## 新增固定資產 (最小必填)\n\n**功能說明：** 使用最少必填欄位新增固定資產\n\n**必填欄位：**\n1. `assetNumber`: 財產編號\n2. `assetName`: 財產名稱\n3. `unit`: 單位\n4. `acquisitionDate`: 取得日期\n5. `initialQuantity`: 列管列帳類型\n6. `keeperId`: 保管人ID\n7. `departmentId`: 部門ID\n8. `acquisitionAmount`: 取得數量\n9. `acquisitionPrice`: 取得成本\n10. `mainAssetNumber`: 主財產類號\n\n**自動設定的預設值：**\n- `costNotDepreciated` = `acquisitionPrice`\n- `stockValue` = `acquisitionAmount`"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "6. 新增固定資產 (辦公家具)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"assetNumber\": \"FA-2024-003\",\n  \"assetName\": \"辦公桌\",\n  \"assetSpec\": \"180cm x 80cm，胡桃木色\",\n  \"unit\": \"張\",\n  \"supplier\": \"震旦辦公家具\",\n  \"acquisitionDate\": \"2024-01-20\",\n  \"initialQuantity\": 1,\n  \"keeperId\": 2,\n  \"departmentId\": 2,\n  \"location\": \"行政大樓-2樓\",\n  \"acquisitionAmount\": 5,\n  \"acquisitionPrice\": 8000,\n  \"mainAssetNumber\": \"FA-2024\",\n  \"subCategory\": \"辦公家具\",\n  \"budgetSource\": 2\n}"
+                        },
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets"
+                            ]
+                        },
+                        "description": "## 新增固定資產 (辦公家具範例)\n\n**資產類型：** 辦公家具\n\n**特點：**\n- 數量較多 (5張)\n- 不需要折舊資訊\n- 列管類型 (initialQuantity = 1)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "7. 更新固定資產 (基本資料)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"assetName\": \"桌上型電腦(已升級)\",\n  \"assetSpec\": \"Intel Core i7-12700, 32GB DDR4, 1TB NVMe SSD\",\n  \"location\": \"資訊室-B棟5樓\",\n  \"keeperId\": 2\n}"
+                        },
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets/{{assetId}}",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets",
+                                "{{assetId}}"
+                            ]
+                        },
+                        "description": "## 更新固定資產 (基本資料)\n\n**功能說明：** 更新資產的基本資料\n\n**可更新欄位：** 除了 `assetNumber` 以外的所有欄位\n\n**此範例更新：**\n- 財產名稱\n- 規格\n- 存放地點\n- 保管人"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "7. 更新固定資產 (折舊資訊)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"usedLifeMonths\": 12,\n  \"stockValue\": 1,\n  \"zero\": 0\n}"
+                        },
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets/{{assetId}}",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets",
+                                "{{assetId}}"
+                            ]
+                        },
+                        "description": "## 更新固定資產 (折舊資訊)\n\n**功能說明：** 更新資產的折舊相關資訊\n\n**此範例更新：**\n- 總用年限 (usedLifeMonths)\n- 庫存數量 (stockValue)\n- 攤提至零 (zero)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "7. 更新固定資產 (資產結案)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"closeDate\": \"2025-12-31\",\n  \"zero\": 1,\n  \"stockValue\": 0\n}"
+                        },
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets/{{assetId}}",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets",
+                                "{{assetId}}"
+                            ]
+                        },
+                        "description": "## 更新固定資產 (資產結案)\n\n**功能說明：** 設定資產結案資訊\n\n**此範例設定：**\n- 關帳年月 (closeDate)\n- 攤提至零 (zero = 1)\n- 庫存數量歸零 (stockValue = 0)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "8. 刪除固定資產",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets/{{assetId}}",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets",
+                                "{{assetId}}"
+                            ]
+                        },
+                        "description": "## 刪除固定資產\n\n**功能說明：** 刪除固定資產 (軟刪除)\n\n**路徑參數：**\n- `id`: 資產ID (必填)\n\n**注意事項：**\n- 使用軟刪除 (SoftDeletes)\n- 資料不會真的被刪除，只會標記 `deleted_at`\n- 可透過資料庫管理工具還原"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "9. 根據保管人查詢資產",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets/keeper?keeperId=1",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets",
+                                "keeper"
+                            ],
+                            "query": [
+                                {
+                                    "key": "keeperId",
+                                    "value": "1",
+                                    "description": "保管人ID (必填)"
+                                }
+                            ]
+                        },
+                        "description": "## 根據保管人查詢資產\n\n**功能說明：** 查詢指定保管人的所有資產\n\n**查詢參數：**\n- `keeperId`: 保管人ID (必填)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "10. 根據部門查詢資產",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets/department?departmentId=1",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets",
+                                "department"
+                            ],
+                            "query": [
+                                {
+                                    "key": "departmentId",
+                                    "value": "1",
+                                    "description": "部門ID (必填)"
+                                }
+                            ]
+                        },
+                        "description": "## 根據部門查詢資產\n\n**功能說明：** 查詢指定部門的所有資產\n\n**查詢參數：**\n- `departmentId`: 部門ID (必填)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "11. 檢查財產編號是否存在",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/assets/check-number?assetNumber=FA-2024-001&excludeId=1",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "assets",
+                                "check-number"
+                            ],
+                            "query": [
+                                {
+                                    "key": "assetNumber",
+                                    "value": "FA-2024-001",
+                                    "description": "財產編號 (必填)"
+                                },
+                                {
+                                    "key": "excludeId",
+                                    "value": "1",
+                                    "description": "排除的資產ID (選填，用於編輯時)",
+                                    "disabled": true
+                                }
+                            ]
+                        },
+                        "description": "## 檢查財產編號是否存在\n\n**功能說明：** 檢查財產編號是否已經被使用\n\n**查詢參數：**\n- `assetNumber`: 財產編號 (必填)\n- `excludeId`: 排除的資產ID (選填，編輯時使用)\n\n**回應範例：**\n```json\n{\n  \"exists\": true\n}\n```"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "異動記錄明細",
+            "item": [
+                {
+                    "name": "1. 取得資產的異動記錄",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{devUrl}}/api/pc/transdetail/asset/{{assetId}}",
+                            "host": [
+                                "{{devUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "pc",
+                                "transdetail",
+                                "asset",
+                                "{{assetId}}"
+                            ]
+                        },
+                        "description": "## 取得資產的異動記錄\n\n**功能說明：** 根據資產ID取得該資產的所有異動記錄明細\n\n**路徑參數：**\n- `assetId`: 資產ID (必填)\n\n**回應內容：**\n- 異動類別 (1=新增, 2=出售, 3=報廢, 4=移轉, 5=改良)\n- 異動數量\n- 異動金額\n- 異動時間\n- 保管人資訊"
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}

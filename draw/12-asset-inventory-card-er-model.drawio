@@ -1,0 +1,97 @@
+<mxfile host="app.diagrams.net" modified="2026-01-27T00:00:00.000Z" agent="5.0" version="24.0.0" etag="drawio-er-inventory-card">
+  <diagram name="資產盤點卡 ER Model" id="er-diagram-inventory-card">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- 標題 -->
+        <mxCell id="title" value="資產盤點卡 ER Model" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="450" y="20" width="700" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 資產主檔 -->
+        <mxCell id="fixed_assets" value="pc_fixed_assets (資產主檔)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="320" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_fields" value="PK  id: bigint (主鍵)&#xa;UK  asset_number: varchar(50) 資產編號*&#xa;    asset_name: varchar(200) 資產名稱*&#xa;    specification: varchar(500) 規格&#xa;    quantity: int 數量*&#xa;    unit: varchar(20) 單位*&#xa;FK  asset_class_id: bigint 資產分類ID*&#xa;FK  asset_category_id: bigint 資產類別ID*&#xa;FK  asset_attribute_id: bigint 資產屬性ID*&#xa;FK  department_id: bigint 使用部門ID*&#xa;    department_name: varchar(100) 使用部門名稱&#xa;FK  storage_location_id: bigint 存放位置ID&#xa;    storage_location: varchar(200) 存放位置&#xa;FK  keeper_id: bigint 保管人ID&#xa;    keeper_name: varchar(100) 保管人姓名&#xa;    acquisition_date: date 取得日期*&#xa;    original_value: bigint 原始成本*&#xa;    residual_rate: decimal(5,2) 殘值率%&#xa;    depreciation_years: int 折舊年限*&#xa;FK  depreciation_category: varchar(50) 折舊科目*&#xa;FK  cumulative_category: varchar(50) 累積折舊科目*&#xa;    created_at: timestamp&#xa;    updated_at: timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="30" width="320" height="390" as="geometry" />
+        </mxCell>
+
+        <!-- 資產盤點卡設定 -->
+        <mxCell id="inventory_card_settings" value="pc_asset_inventory_card_settings (盤點卡設定)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="550" y="100" width="380" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="inventory_card_settings_fields" value="PK  id: bigint (主鍵)&#xa;UK  fiscal_year: varchar(10) 會計年度*&#xa;UK  inventory_month: varchar(10) 盤點月份*&#xa;    print_date: date 列印日期*&#xa;       (預設=今日,可更改)&#xa;    email_recipients: text 副本名單 (Email清單,JSON格式)&#xa;       (可從OA員工檔挑選,以逗號分隔)&#xa;    status: varchar(20) 狀態 (DRAFT=草稿,PRINTED=已列印,SENT=已寄出)&#xa;    print_count: int 列印次數 (預設=0)&#xa;    last_print_time: timestamp 最後列印時間&#xa;    sent_time: timestamp 郵件寄送時間&#xa;    created_by: bigint 建立人ID&#xa;    created_at: timestamp&#xa;    updated_at: timestamp&#xa;&#xa;【說明】&#xa;- 每個會計年度+盤點月份僅允許一筆設定&#xa;- 列印時自動產生PDF檔案&#xa;- 郵件寄送後狀態更新為SENT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="inventory_card_settings">
+          <mxGeometry y="30" width="380" height="250" as="geometry" />
+        </mxCell>
+
+        <!-- OA部門主檔 -->
+        <mxCell id="departments" value="sc_departments (OA部門主檔)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="100" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="departments_fields" value="PK  id: bigint&#xa;    code: varchar(20) 部門編號&#xa;    name: varchar(100) 部門名稱&#xa;    created_at: timestamp&#xa;    updated_at: timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="departments">
+          <mxGeometry y="30" width="220" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- OA員工主檔 -->
+        <mxCell id="employees" value="sc_employees (OA員工主檔)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParent=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="260" width="220" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="employees_fields" value="PK  id: bigint&#xa;    code: varchar(20) 員工編號&#xa;    name: varchar(100) 員工姓名&#xa;    email: varchar(100) Email&#xa;    created_at: timestamp&#xa;    updated_at: timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="employees">
+          <mxGeometry y="30" width="220" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- 業務規則說明 -->
+        <mxCell id="business_rules" value="【業務規則說明】" style="swimlane;fontStyle=1;align=left;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="570" width="750" height="530" as="geometry" />
+        </mxCell>
+        <mxCell id="business_rules_content" value="【作業目的】&#xa;提供資產盤點卡列印功能,供各部門進行年度資產盤點作業&#xa;&#xa;【作業流程】&#xa;1. 輸入會計年度(必填,格式:114)&#xa;2. 輸入盤點月份(必填,格式:01-12)&#xa;3. 輸入列印日期(必填,預設=今日,可更改)&#xa;4. 選擇副本名單(從OA員工檔挑選,可複選)&#xa;5. 點擊「盤點卡產生」按鈕&#xa;6. 系統產生PDF檔案&#xa;7. 點擊「盤點卡列印」按鈕&#xa;8. 系統開啟PDF檔案供列印&#xa;9. 點擊「盤點卡寄送」按鈕&#xa;10. 系統寄送郵件至各保管人及副本名單&#xa;&#xa;【盤點卡產生邏輯】&#xa;◆ 盤點卡內容:&#xa;  - 會計年度: 使用者輸入之會計年度&#xa;  - 盤點月份: 使用者輸入之盤點月份&#xa;  - 列印日期: 使用者輸入之列印日期&#xa;  - 使用部門: 依資產主檔之使用部門進行分組&#xa;  - 保管人: 依資產主檔之保管人進行分組&#xa;&#xa;◆ 盤點卡格式:&#xa;  - 每個部門+保管人組合產生一張盤點卡&#xa;  - 盤點卡標題: 資產盤點卡&#xa;  - 副標題: [會計年度]/[盤點月份] 資產盤點&#xa;  - 部門: [使用部門名稱]&#xa;  - 保管人: [保管人姓名]&#xa;  - 列印日期: [列印日期]&#xa;&#xa;◆ 盤點卡明細欄位:&#xa;  1. 資產編號&#xa;  2. 資產名稱&#xa;  3. 規格&#xa;  4. 數量&#xa;  5. 單位&#xa;  6. 存放位置&#xa;  7. 取得日期&#xa;  8. 原始成本&#xa;  9. 盤點結果 (空白欄位供手寫)&#xa;  10. 備註 (空白欄位供手寫)&#xa;&#xa;【盤點卡列印處理】&#xa;◆ PDF產生:&#xa;  - 系統自動產生PDF檔案&#xa;  - 檔案命名: 資產盤點卡_[會計年度]_[盤點月份]_[部門]_[保管人].pdf&#xa;  - 儲存路徑: storage/app/inventory_cards/[會計年度]/[盤點月份]/&#xa;&#xa;◆ 列印次數統計:&#xa;  - 每次點擊「盤點卡列印」,列印次數+1&#xa;  - 記錄最後列印時間&#xa;&#xa;【盤點卡寄送處理】&#xa;◆ 郵件寄送對象:&#xa;  - 收件人: 各保管人Email (依資產主檔之保管人Email)&#xa;  - 副本: 使用者選擇之副本名單Email&#xa;&#xa;◆ 郵件內容:&#xa;  - 主旨: [會計年度]/[盤點月份] 資產盤點卡 - [部門]_[保管人]&#xa;  - 內文:&#xa;    [保管人姓名] 您好:&#xa;    &#xa;    請協助進行 [會計年度]/[盤點月份] 資產盤點作業。&#xa;    請檢視附件之資產盤點卡,確認資產實際狀況。&#xa;    &#xa;    若有任何問題,請聯繫資產管理人員。&#xa;    &#xa;    謝謝。&#xa;  - 附件: 資產盤點卡PDF檔案&#xa;&#xa;◆ 寄送後處理:&#xa;  - 更新狀態為SENT (已寄出)&#xa;  - 記錄郵件寄送時間&#xa;&#xa;【查詢條件】&#xa;◆ 會計年度: 必填,格式:114&#xa;◆ 盤點月份: 必填,格式:01-12&#xa;&#xa;【欄位驗證】&#xa;◆ 會計年度: 必填,格式:3位數字&#xa;◆ 盤點月份: 必填,格式:2位數字,範圍01-12&#xa;◆ 列印日期: 必填,日期格式&#xa;◆ 副本名單: 選填,Email格式驗證&#xa;&#xa;【特殊說明】&#xa;- 盤點卡產生後,若需重新產生,系統會覆蓋原有PDF檔案&#xa;- 每次產生盤點卡時,列印次數會重置為0&#xa;- 寄送郵件後,若需重新寄送,需先點擊「盤點卡產生」按鈕" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="business_rules">
+          <mxGeometry y="30" width="750" height="500" as="geometry" />
+        </mxCell>
+
+        <!-- 關聯線 -->
+        <!-- fixed_assets -> inventory_card_settings -->
+        <mxCell id="rel1" value="" style="endArrow=ERone;html=1;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=ERmany;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="fixed_assets" target="inventory_card_settings">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel1_label" value="N : 1&#xa;產生盤點卡" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel1">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- departments -> fixed_assets -->
+        <mxCell id="rel2" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.3;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="departments" target="fixed_assets">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="800" y="160"/>
+              <mxPoint x="800" y="230"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel2_label" value="1 : N&#xa;使用部門" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel2">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- employees -> fixed_assets -->
+        <mxCell id="rel3" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="employees" target="fixed_assets">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="850" y="330"/>
+              <mxPoint x="850" y="310"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel3_label" value="1 : N&#xa;保管人" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel3">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,289 @@
+<mxfile host="app.diagrams.net" modified="2026-01-27T00:00:00.000Z" agent="5.0" version="24.0.0" etag="pc-er-model">
+  <diagram name="PC財產管理ER Model" id="pc-er-diagram">
+    <mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- 標題 -->
+        <mxCell id="title" value="PC 財產管理系統 Entity Relationship Model" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=28;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="600" y="20" width="800" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- 說明文字 -->
+        <mxCell id="description" value="版本: 2.0.0 | 更新日期: 2026-01-27 | 共 9 個資料表" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="600" y="70" width="800" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 圖例 -->
+        <mxCell id="legend_title" value="圖例說明" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="120" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_pk" value="PK = Primary Key (主鍵)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="150" width="200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_fk" value="FK = Foreign Key (外鍵)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="175" width="200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_uk" value="UK = Unique Key (唯一鍵)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="200" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- 1. 固定資產主表 pc_fixed_assets -->
+        <mxCell id="fixed_assets" value="📦 pc_fixed_assets (固定資產主表)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="700" y="120" width="320" height="730" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_header" value="基本資料" style="text;strokeColor=none;fillColor=#e3f2fd;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontStyle=1;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="35" width="320" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_basic" value="PK  id: bigint (自動編號)&#xa;UK  asset_number: varchar(50) (財產編號)&#xa;    asset_name: varchar(200) (財產名稱)&#xa;    asset_spec: varchar(500) (資產規格)&#xa;    unit: varchar(20) (單位)&#xa;    supplier: varchar(50) (供應商)&#xa;    acquisition_date: date (取得日期)&#xa;    initial_quantity: tinyint (列管列帳)&#xa;FK  keeper_id: bigint (保管人→sc_users)&#xa;FK  department_id: bigint (部門→sc_departments)&#xa;    location: varchar(200) (存放地點)&#xa;    acquisition_amount: bigint (取得數量)&#xa;    acquisition_price: bigint (取得成本)&#xa;    cost_not_depreciated: bigint (成本總額)&#xa;    main_asset_number: varchar(50) (主財產類號)&#xa;    sub_category: varchar(50) (總帳科目)&#xa;    close_date: date (關帳年月)&#xa;    budget_source: bigint (預留殘值)&#xa;    extension: tinyint (抵押狀態)&#xa;    investment: tinyint (投保狀況)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="60" width="320" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_depreciation_header" value="折舊資訊 (來自 pc_depreciations)" style="text;strokeColor=none;fillColor=#f3e5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontStyle=1;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="380" width="320" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_depreciation" value="    depreciation_category: varchar(50) (折舊科目)&#xa;    cumulative_depreciation_category: varchar(50)&#xa;      (累計折舊科目)&#xa;    start_date: date (開始提列年月)&#xa;    useful_life_months: int (耐用年限-月)&#xa;    used_life_months: int (總用年限-月)&#xa;    residual_value_rate: int (估前累計)&#xa;    zero: int (攤提至零日期)&#xa;    continued: int (續提月數)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="405" width="320" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_transaction_header" value="異動資訊 (來自 pc_asset_transactions)" style="text;strokeColor=none;fillColor=#fff9c4;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontStyle=1;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="550" width="320" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_transaction" value="    add_amount: int (增添改良)&#xa;    add_date: date (增添日期)&#xa;    original_value: int (重估差價)&#xa;    stock_value: int (庫存數量)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="575" width="320" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_system" value="    created_at: timestamp (建立時間)&#xa;    updated_at: timestamp (更新時間)&#xa;    deleted_at: timestamp (刪除時間-軟刪除)" style="text;strokeColor=none;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="640" width="320" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_note" value="註: 整合了折舊與異動資訊，核心主表" style="text;strokeColor=none;fillColor=#ffebee;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontStyle=2;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="690" width="320" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 2. 異動記錄明細表 pc_asset_transaction_details -->
+        <mxCell id="transaction_details" value="📝 pc_asset_transaction_details (異動記錄明細)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="120" width="340" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="transaction_details_fields" value="PK  id: bigint (自動編號)&#xa;FK  asset_id: bigint (固定資產→pc_fixed_assets)&#xa;    type: int (異動類別)&#xa;      1=新增 2=出售 3=報廢 4=移轉 5=改良&#xa;FK  keeper_id: bigint (保管人→sc_users)&#xa;    transaction_quantity: bigint (異動數量)&#xa;    transaction_amount: bigint (異動金額)&#xa;    transaction_date: date (異動時間)&#xa;    created_at: timestamp (建立時間)&#xa;    updated_at: timestamp (更新時間)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="transaction_details">
+          <mxGeometry y="35" width="340" height="165" as="geometry" />
+        </mxCell>
+        <mxCell id="transaction_details_note" value="註: 記錄所有資產異動的歷史明細" style="text;strokeColor=none;fillColor=#ffebee;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontStyle=2;" vertex="1" parent="transaction_details">
+          <mxGeometry y="200" width="340" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- 3. 資產移轉作業表 pc_asset_transfers -->
+        <mxCell id="transfers" value="🔄 pc_asset_transfers (資產移轉作業)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="280" y="120" width="360" height="340" as="geometry" />
+        </mxCell>
+        <mxCell id="transfers_fields" value="PK  id: bigint (自動編號)&#xa;FK  asset_id: bigint (固定資產→pc_fixed_assets)&#xa;    asset_number: varchar(50) (財產編號)&#xa;    transfer_date: date (移轉日期)&#xa;    transfer_number: varchar(50) (移轉單號)&#xa;    transfer_reason: varchar(500) (移轉原因)&#xa;    transfer_quantity: bigint (移轉數量)&#xa;FK  original_keeper_id: bigint (原保管人→sc_users)&#xa;FK  new_keeper_id: bigint (新保管人→sc_users)&#xa;FK  original_department: bigint (原部門→sc_departments)&#xa;FK  new_department: bigint (新部門→sc_departments)&#xa;    created_at: timestamp (建立時間)&#xa;    updated_at: timestamp (更新時間)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="transfers">
+          <mxGeometry y="35" width="360" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="transfers_note" value="註: 記錄資產在部門/人員間的移轉記錄&#xa;     包含移轉前後的保管人與部門資訊" style="text;strokeColor=none;fillColor=#ffebee;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontStyle=2;" vertex="1" parent="transfers">
+          <mxGeometry y="245" width="360" height="95" as="geometry" />
+        </mxCell>
+
+        <!-- 4. 折舊作業表 pc_depreciation_operations -->
+        <mxCell id="depreciation_ops" value="📊 pc_depreciation_operations (折舊作業)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="450" width="340" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="depreciation_ops_fields" value="PK  id: bigint (自動編號)&#xa;FK  asset_id: bigint (固定資產→pc_fixed_assets)&#xa;    schedule_number: int (攤提次數-自動+1)&#xa;    department: bigint (部門)&#xa;    depreciation_year_month: varchar(7) (折舊年月)&#xa;      格式: YYYY-MM&#xa;    useful_life_months: int (續用年限-月)&#xa;    monthly_depreciation: int (每月攤提)&#xa;    current_month_depreciation: int (未月尾數)&#xa;    created_at: timestamp (建立時間)&#xa;    updated_at: timestamp (更新時間)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="depreciation_ops">
+          <mxGeometry y="35" width="340" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="depreciation_ops_note" value="註: 記錄每次折舊作業的執行資訊" style="text;strokeColor=none;fillColor=#ffebee;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontStyle=2;" vertex="1" parent="depreciation_ops">
+          <mxGeometry y="215" width="340" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- 5. 折舊資料表 pc_depreciation_datas -->
+        <mxCell id="depreciation_data" value="📈 pc_depreciation_datas (折舊資料)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="780" width="340" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="depreciation_data_fields" value="PK  id: bigint (自動編號)&#xa;FK  asset_id: bigint (固定資產→pc_fixed_assets)&#xa;FK  operation_id: bigint (折舊作業→pc_depreciation_operations)&#xa;    date: int (折舊年月 ex: 114/12)&#xa;    cost_amount: bigint (成本總額)&#xa;    monthly_depreciation: int (每月攤提)&#xa;    accumulated_depreciation: int (累積折舊)&#xa;    department: bigint (折舊部門)&#xa;    status: tinyint (月結註記)&#xa;    created_at: timestamp (建立時間)&#xa;    updated_at: timestamp (更新時間)&#xa;&#xa;UK  (asset_id, date) 唯一約束" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="depreciation_data">
+          <mxGeometry y="35" width="340" height="195" as="geometry" />
+        </mxCell>
+        <mxCell id="depreciation_data_note" value="註: 記錄每月的折舊計算結果&#xa;     同一資產同一月份只能有一筆記錄" style="text;strokeColor=none;fillColor=#ffebee;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontStyle=2;" vertex="1" parent="depreciation_data">
+          <mxGeometry y="230" width="340" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- 6. 資產處置作業表 pc_asset_disposals -->
+        <mxCell id="disposals" value="🗑️ pc_asset_disposals (資產處置作業)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="700" y="900" width="340" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="disposals_fields" value="PK  id: bigint (自動編號)&#xa;FK  asset_number: varchar(50) (財產編號→pc_fixed_assets)&#xa;    disposal_type: tinyint (處置類型)&#xa;      1=出售 2=報廢&#xa;UK  disposal_number: varchar(50) (處置單號-自動產生)&#xa;    disposal_date: date (處置日期)&#xa;    remaining_months: int (剩餘年限-月-系統計算)&#xa;    disposal_quantity: int (處置數量)&#xa;    disposal_price: bigint (處置售價)&#xa;    disposal_profit_loss: bigint (處置損益-系統計算)&#xa;FK  created_by: bigint (建立人→sc_users)&#xa;    created_at: timestamp (建立時間)&#xa;    updated_at: timestamp (更新時間)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="disposals">
+          <mxGeometry y="35" width="340" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="disposals_note" value="註: 記錄資產出售或報廢的處置資訊" style="text;strokeColor=none;fillColor=#ffebee;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontStyle=2;" vertex="1" parent="disposals">
+          <mxGeometry y="245" width="340" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- 7. 編碼類別表 pc_encoding_categories -->
+        <mxCell id="encoding_categories" value="🏷️ pc_encoding_categories (編碼類別)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="280" y="520" width="340" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="encoding_categories_fields" value="PK  id: bigint (自動編號)&#xa;UK  category_code: varchar(1) (類別代號)&#xa;    category_name: varchar(250) (類別名稱)&#xa;    category_digits: int (類別碼數 1-9)&#xa;    rule: text (規則)&#xa;    is_disabled: boolean (停用否-預設false)&#xa;FK  created_by: bigint (新增人員→sc_users)&#xa;    created_at: timestamp (建立時間)&#xa;    updated_at: timestamp (更新時間)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="encoding_categories">
+          <mxGeometry y="35" width="340" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="encoding_categories_note" value="註: 定義財產編碼的類別規則" style="text;strokeColor=none;fillColor=#ffebee;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontStyle=2;" vertex="1" parent="encoding_categories">
+          <mxGeometry y="185" width="340" height="75" as="geometry" />
+        </mxCell>
+
+        <!-- 8. 編碼項目表 pc_encoding_items -->
+        <mxCell id="encoding_items" value="📋 pc_encoding_items (編碼項目)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="280" y="830" width="360" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="encoding_items_fields" value="PK  id: bigint (自動編號)&#xa;FK  pc_encoding_category_id: bigint (編碼類型)&#xa;      →pc_encoding_categories&#xa;    item_code: varchar(50) (項目代碼)&#xa;    item_name: varchar(250) (項目名稱)&#xa;    item_english_name: varchar(250) (項目英文名稱)&#xa;    is_disabled: boolean (停用否-預設false)&#xa;FK  created_by: bigint (新增人員→sc_users)&#xa;    created_at: timestamp (建立時間)&#xa;    updated_at: timestamp (更新時間)&#xa;&#xa;UK  (pc_encoding_category_id, item_code) 唯一約束" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="encoding_items">
+          <mxGeometry y="35" width="360" height="185" as="geometry" />
+        </mxCell>
+        <mxCell id="encoding_items_note" value="註: 定義各類別下的具體編碼項目" style="text;strokeColor=none;fillColor=#ffebee;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontStyle=2;" vertex="1" parent="encoding_items">
+          <mxGeometry y="220" width="360" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- 9. 編碼規則表 pc_encoding_rules -->
+        <mxCell id="encoding_rules" value="⚙️ pc_encoding_rules (編碼規則)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="280" y="1150" width="360" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="encoding_rules_fields" value="PK  id: bigint (自動編號)&#xa;UK  sequence: int (順序-唯一)&#xa;FK  pc_encoding_category_id: bigint (類別代碼)&#xa;      →pc_encoding_categories&#xa;    serial_digits: int (流水號碼數 1-9)&#xa;FK  created_by: bigint (新增人員→sc_users)&#xa;    created_at: timestamp (建立時間)&#xa;    updated_at: timestamp (更新時間)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontFamily=Courier New;" vertex="1" parent="encoding_rules">
+          <mxGeometry y="35" width="360" height="135" as="geometry" />
+        </mxCell>
+        <mxCell id="encoding_rules_note" value="註: 定義編碼產生的順序規則" style="text;strokeColor=none;fillColor=#ffebee;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontStyle=2;" vertex="1" parent="encoding_rules">
+          <mxGeometry y="170" width="360" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- 關聯線條 -->
+        <!-- fixed_assets → transaction_details -->
+        <mxCell id="rel_1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;strokeColor=#666666;" edge="1" parent="1" source="fixed_assets" target="transaction_details">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_1_label" value="1:N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" connectable="0" parent="rel_1">
+          <mxGeometry x="-0.2" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- fixed_assets → transfers -->
+        <mxCell id="rel_2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;strokeColor=#666666;" edge="1" parent="1" source="fixed_assets" target="transfers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_2_label" value="1:N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" connectable="0" parent="rel_2">
+          <mxGeometry x="-0.2" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- fixed_assets → depreciation_ops -->
+        <mxCell id="rel_3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;strokeColor=#666666;" edge="1" parent="1" source="fixed_assets" target="depreciation_ops">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_3_label" value="1:N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" connectable="0" parent="rel_3">
+          <mxGeometry x="-0.2" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- fixed_assets → depreciation_data -->
+        <mxCell id="rel_4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;strokeColor=#666666;" edge="1" parent="1" source="fixed_assets" target="depreciation_data">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_4_label" value="1:N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" connectable="0" parent="rel_4">
+          <mxGeometry x="-0.2" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- fixed_assets → disposals -->
+        <mxCell id="rel_5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;strokeColor=#666666;" edge="1" parent="1" source="fixed_assets" target="disposals">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_5_label" value="1:N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" connectable="0" parent="rel_5">
+          <mxGeometry x="-0.2" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- depreciation_ops → depreciation_data -->
+        <mxCell id="rel_6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;strokeColor=#666666;" edge="1" parent="1" source="depreciation_ops" target="depreciation_data">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_6_label" value="1:N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" connectable="0" parent="rel_6">
+          <mxGeometry x="-0.2" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- encoding_categories → encoding_items -->
+        <mxCell id="rel_7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;strokeColor=#666666;" edge="1" parent="1" source="encoding_categories" target="encoding_items">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_7_label" value="1:N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" connectable="0" parent="rel_7">
+          <mxGeometry x="-0.2" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- encoding_categories → encoding_rules -->
+        <mxCell id="rel_8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;strokeColor=#666666;" edge="1" parent="1" source="encoding_categories" target="encoding_rules">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_8_label" value="1:N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1;fontColor=#333333;" vertex="1" connectable="0" parent="rel_8">
+          <mxGeometry x="-0.2" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 外部關聯說明 -->
+        <mxCell id="external_relations_title" value="外部資料表關聯" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="120" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="external_sc_users" value="👤 sc_users (使用者)&#xa;  - keeper_id&#xa;  - created_by&#xa;  - original_keeper_id&#xa;  - new_keeper_id" style="text;html=1;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="160" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="external_sc_departments" value="🏢 sc_departments (部門)&#xa;  - department_id&#xa;  - original_department&#xa;  - new_department" style="text;html=1;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="270" width="200" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- 資料表分類說明 -->
+        <mxCell id="table_categories_title" value="資料表分類" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="370" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cat_core" value="🔵 核心資料&#xa;  pc_fixed_assets" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="410" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cat_transaction" value="🟡 異動管理&#xa;  pc_asset_transaction_details&#xa;  pc_asset_transfers" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="480" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="cat_depreciation" value="🟣 折舊管理&#xa;  pc_depreciation_operations&#xa;  pc_depreciation_datas" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="570" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="cat_disposal" value="🔴 處置管理&#xa;  pc_asset_disposals" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="660" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cat_encoding" value="🟢 編碼管理&#xa;  pc_encoding_categories&#xa;  pc_encoding_items&#xa;  pc_encoding_rules" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="730" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- 重要說明區塊 -->
+        <mxCell id="important_notes_title" value="⚠️ 重要說明" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#d32f2f;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="840" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="note_1" value="1. pc_fixed_assets 為核心主表，整合了&#xa;   折舊與異動資訊" style="text;html=1;strokeColor=#d32f2f;fillColor=#ffebee;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="880" width="300" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="note_2" value="2. depreciation_category 與&#xa;   cumulative_depreciation_category&#xa;   已改為字串型態(varchar 50)" style="text;html=1;strokeColor=#d32f2f;fillColor=#ffebee;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="950" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="note_3" value="3. 所有資料表都包含 created_at 與&#xa;   updated_at 時間戳記" style="text;html=1;strokeColor=#d32f2f;fillColor=#ffebee;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="1040" width="300" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="note_4" value="4. pc_fixed_assets 使用軟刪除&#xa;   (deleted_at)" style="text;html=1;strokeColor=#d32f2f;fillColor=#ffebee;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="1110" width="300" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="note_5" value="5. 關聯關係皆為 1:N (一對多)" style="text;html=1;strokeColor=#d32f2f;fillColor=#ffebee;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=11;spacingLeft=5;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="1180" width="300" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 版本資訊 -->
+        <mxCell id="version_info" value="PC 財產管理系統 ER Model v2.0.0&#xa;更新日期: 2026-01-27&#xa;資料表數量: 9 個&#xa;核心表: 1 | 異動: 2 | 折舊: 2 | 處置: 1 | 編碼: 3" style="text;html=1;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;spacingLeft=10;spacingTop=10;fontFamily=Courier New;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1250" width="400" height="80" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

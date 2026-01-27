@@ -1,0 +1,192 @@
+<mxfile host="app.diagrams.net" modified="2026-01-26T00:00:00.000Z" agent="5.0" version="24.0.0" etag="drawio">
+  <diagram name="固定資產管理系統流程" id="fixed-asset-flow">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- 標題 -->
+        <mxCell id="title" value="固定資產管理系統流程圖" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="420" y="40" width="330" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 開始節點 -->
+        <mxCell id="start" value="開始" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="520" y="100" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- 資產新增流程 -->
+        <mxCell id="create-asset" value="新增固定資產" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="520" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="start" target="create-asset">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 資產驗證 -->
+        <mxCell id="validate" value="資料驗證&lt;br&gt;(Controller)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="510" y="300" width="140" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="create-asset" target="validate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 驗證失敗 -->
+        <mxCell id="validate-fail" value="返回錯誤訊息" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="720" y="310" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arrow3" value="失敗" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="validate" target="validate-fail">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 儲存資料 -->
+        <mxCell id="save-data" value="儲存固定資產&lt;br&gt;(Repository)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="520" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arrow4" value="成功" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="validate" target="save-data">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 創建折舊設定 -->
+        <mxCell id="create-depreciation" value="建立折舊設定&lt;br&gt;(DepreciationService)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="520" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arrow5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="save-data" target="create-depreciation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 創建異動記錄 -->
+        <mxCell id="create-transaction" value="建立異動記錄&lt;br&gt;(AssetTransactionService)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="520" y="620" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arrow6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="create-depreciation" target="create-transaction">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 返回資源 -->
+        <mxCell id="return-resource" value="返回 Resource&lt;br&gt;(FixedAssetResource)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="520" y="720" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arrow7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="create-transaction" target="return-resource">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 資產查詢流程 -->
+        <mxCell id="query-branch" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="180" width="200" height="340" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="query-title" value="資產查詢流程" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="110" y="190" width="140" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="query-list" value="列表查詢&lt;br&gt;(index)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="120" y="240" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="query-detail" value="單筆查詢&lt;br&gt;(show)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="120" y="310" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="query-search" value="關鍵字搜尋&lt;br&gt;(search)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="120" y="380" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="query-filter" value="條件篩選&lt;br&gt;(keeper/department)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="120" y="450" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- 資產異動流程 -->
+        <mxCell id="update-branch" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="180" width="160" height="260" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="update-title" value="資產異動流程" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="330" y="190" width="140" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="update-asset" value="更新資產&lt;br&gt;(update)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="340" y="240" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="transfer-asset" value="資產移轉&lt;br&gt;(AssetTransfer)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="340" y="310" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="disposal-asset" value="資產處置&lt;br&gt;(AssetDisposal)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="340" y="380" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- 折舊流程 -->
+        <mxCell id="depreciation-branch" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="720" y="420" width="200" height="260" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="depreciation-title" value="折舊計算流程" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="750" y="430" width="140" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="depreciation-calc" value="計算折舊&lt;br&gt;(DepreciationService)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="760" y="480" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="depreciation-save" value="儲存折舊資料&lt;br&gt;(DepreciationData)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="760" y="550" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="depreciation-operation" value="折舊作業&lt;br&gt;(DepreciationOperation)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="760" y="620" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow-dep1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="depreciation-calc" target="depreciation-save">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow-dep2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="depreciation-save" target="depreciation-operation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 圖例 -->
+        <mxCell id="legend-box" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="80" y="580" width="200" height="200" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-title" value="圖例說明" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="110" y="590" width="140" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend1" value="Controller" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="100" y="630" width="80" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend2" value="Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="190" y="630" width="70" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend3" value="Repository" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="100" y="670" width="80" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend4" value="Resource" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="190" y="670" width="70" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend5" value="驗證/決策" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="100" y="710" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend6" value="錯誤處理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="190" y="720" width="70" height="30" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

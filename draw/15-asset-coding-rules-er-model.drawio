@@ -1,0 +1,84 @@
+<mxfile host="app.diagrams.net" modified="2026-01-27T00:00:00.000Z" agent="5.0" version="24.0.0" etag="drawio-er-coding-rules">
+  <diagram name="資產編碼原則建立 ER Model" id="er-diagram-coding-rules">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- 標題 -->
+        <mxCell id="title" value="資產編碼原則建立 ER Model" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="450" y="20" width="700" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 資產編碼類別 -->
+        <mxCell id="coding_categories" value="pc_asset_coding_categories (資產編碼類別)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="340" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="coding_categories_fields" value="PK  id: bigint (主鍵)&#xa;UK  category_code: varchar(20) 類別代碼*&#xa;       (例如: A, B, C...)&#xa;UK  category_name: varchar(100) 類別名稱*&#xa;       (例如: 建築物及設備, 儀器設備...)&#xa;    description: text 說明&#xa;    sort_order: int 排序 (預設=0)&#xa;    is_active: boolean 啟用狀態 (預設=true)&#xa;    created_at: timestamp&#xa;    updated_at: timestamp&#xa;&#xa;【說明】&#xa;- 類別代碼通常為1-2位英文字母&#xa;- 類別名稱需與公司資產分類一致&#xa;- 排序用於顯示順序&#xa;- 停用之類別不可用於新資產編碼" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="coding_categories">
+          <mxGeometry y="30" width="340" height="230" as="geometry" />
+        </mxCell>
+
+        <!-- 資產編碼項目 -->
+        <mxCell id="coding_items" value="pc_asset_coding_items (資產編碼項目)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="550" y="100" width="380" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="coding_items_fields" value="PK  id: bigint (主鍵)&#xa;FK  category_id: bigint 類別ID*&#xa;UK  item_code: varchar(20) 項目代碼*&#xa;       (例如: 001, 002, 003...)&#xa;UK  item_name: varchar(100) 項目名稱*&#xa;       (例如: 房屋, 建築物, 土地改良物...)&#xa;    description: text 說明&#xa;    code_length: int 編碼長度 (預設=3)&#xa;       (項目代碼之長度,通常為3位數字)&#xa;    start_number: int 起始編號 (預設=1)&#xa;       (流水號起始值)&#xa;    current_number: int 目前編號 (預設=1)&#xa;       (目前已使用到的流水號)&#xa;    sort_order: int 排序 (預設=0)&#xa;    is_active: boolean 啟用狀態 (預設=true)&#xa;    created_at: timestamp&#xa;    updated_at: timestamp&#xa;&#xa;【說明】&#xa;- 項目代碼通常為3位數字&#xa;- 項目名稱需與公司資產細項一致&#xa;- 編碼長度決定流水號之位數&#xa;- 目前編號會隨著產生資產編號而遞增" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="coding_items">
+          <mxGeometry y="30" width="380" height="290" as="geometry" />
+        </mxCell>
+
+        <!-- 資產編碼範例 -->
+        <mxCell id="coding_samples" value="pc_asset_coding_samples (資產編碼範例)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="100" width="380" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="coding_samples_fields" value="PK  id: bigint (主鍵)&#xa;FK  category_id: bigint 類別ID*&#xa;FK  item_id: bigint 項目ID*&#xa;    sample_code: varchar(50) 範例編碼*&#xa;       (例如: A-001-0001)&#xa;    description: text 說明&#xa;    created_at: timestamp&#xa;    updated_at: timestamp&#xa;&#xa;【說明】&#xa;- 提供編碼範例供參考&#xa;- 範例編碼格式: [類別代碼]-[項目代碼]-[流水號]&#xa;- 流水號位數依編碼項目設定之編碼長度決定" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="coding_samples">
+          <mxGeometry y="30" width="380" height="210" as="geometry" />
+        </mxCell>
+
+        <!-- 業務規則說明 -->
+        <mxCell id="business_rules" value="【業務規則說明】" style="swimlane;fontStyle=1;align=left;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="480" width="800" height="670" as="geometry" />
+        </mxCell>
+        <mxCell id="business_rules_content" value="【作業目的】&#xa;提供資產編碼原則管理功能,定義資產編號之產生規則&#xa;&#xa;【作業流程】&#xa;1. 建立資產編碼類別&#xa;2. 建立資產編碼項目&#xa;3. 設定編碼長度及起始編號&#xa;4. 產生編碼範例&#xa;5. 資產建立時依編碼原則產生資產編號&#xa;&#xa;【資產編碼格式】&#xa;◆ 標準格式: [類別代碼]-[項目代碼]-[流水號]&#xa;  範例: A-001-0001&#xa;  ├─ A: 類別代碼 (建築物及設備)&#xa;  ├─ 001: 項目代碼 (房屋)&#xa;  └─ 0001: 流水號 (第1號)&#xa;&#xa;◆ 類別代碼:&#xa;  - 通常為1-2位英文字母&#xa;  - 需與公司資產分類一致&#xa;  - 範例: A=建築物及設備, B=儀器設備, C=運輸設備...&#xa;&#xa;◆ 項目代碼:&#xa;  - 通常為3位數字&#xa;  - 需與公司資產細項一致&#xa;  - 範例: 001=房屋, 002=建築物, 003=土地改良物...&#xa;&#xa;◆ 流水號:&#xa;  - 位數依編碼項目設定之編碼長度決定&#xa;  - 從起始編號開始遞增&#xa;  - 範例: 編碼長度=4, 起始編號=1, 則流水號為0001, 0002, 0003...&#xa;&#xa;【資產編碼類別作業】&#xa;◆ 新增類別:&#xa;  - 類別代碼: 必填,1-2位英文字母,不可重複&#xa;  - 類別名稱: 必填,100字以內&#xa;  - 說明: 選填,文字輸入&#xa;  - 排序: 選填,數字,預設=0&#xa;  - 啟用狀態: 預設=啟用&#xa;&#xa;◆ 修改類別:&#xa;  - 類別代碼不可修改 (若需修改需新增類別)&#xa;  - 類別名稱、說明、排序、啟用狀態可修改&#xa;&#xa;◆ 刪除類別:&#xa;  - 若類別下有編碼項目,不允許刪除&#xa;  - 系統需提示「該類別下有編碼項目,請先刪除編碼項目」&#xa;&#xa;◆ 停用類別:&#xa;  - 停用後,該類別不可用於新資產編碼&#xa;  - 已使用該類別之資產不受影響&#xa;&#xa;【資產編碼項目作業】&#xa;◆ 新增項目:&#xa;  - 類別: 必填,下拉式選單&#xa;  - 項目代碼: 必填,通常為3位數字,不可重複 (同類別內)&#xa;  - 項目名稱: 必填,100字以內&#xa;  - 說明: 選填,文字輸入&#xa;  - 編碼長度: 選填,數字,預設=3 (流水號位數)&#xa;  - 起始編號: 選填,數字,預設=1&#xa;  - 排序: 選填,數字,預設=0&#xa;  - 啟用狀態: 預設=啟用&#xa;&#xa;◆ 修改項目:&#xa;  - 項目代碼不可修改 (若需修改需新增項目)&#xa;  - 項目名稱、說明、編碼長度、起始編號、排序、啟用狀態可修改&#xa;  - 編碼長度修改後,新產生之資產編號才會生效&#xa;&#xa;◆ 刪除項目:&#xa;  - 若項目已用於產生資產編號,不允許刪除&#xa;  - 系統需提示「該項目已用於產生資產編號,不允許刪除」&#xa;&#xa;◆ 停用項目:&#xa;  - 停用後,該項目不可用於新資產編碼&#xa;  - 已使用該項目之資產不受影響&#xa;&#xa;【資產編號產生邏輯】&#xa;◆ 產生時機: 資產建立時,系統自動產生資產編號&#xa;&#xa;◆ 產生規則:&#xa;  1. 依資產分類及細項,找到對應之編碼類別及項目&#xa;  2. 取得編碼項目之目前編號 (current_number)&#xa;  3. 依編碼長度補0,產生流水號&#xa;     範例: current_number=1, code_length=4, 則流水號=0001&#xa;  4. 組合產生資產編號: [類別代碼]-[項目代碼]-[流水號]&#xa;     範例: A-001-0001&#xa;  5. 更新編碼項目之目前編號 (current_number = current_number + 1)&#xa;&#xa;◆ 編號檢查:&#xa;  - 產生前檢查資產編號是否已存在於資產主檔&#xa;  - 若已存在,繼續遞增目前編號,直到產生不重複之資產編號&#xa;&#xa;【編碼範例產生】&#xa;◆ 產生時機: 建立編碼項目後,系統自動產生編碼範例&#xa;&#xa;◆ 產生規則:&#xa;  - 範例編碼 = [類別代碼]-[項目代碼]-[流水號]&#xa;  - 流水號依起始編號及編碼長度補0&#xa;  - 範例: category_code=A, item_code=001, start_number=1, code_length=4&#xa;    → sample_code = A-001-0001&#xa;&#xa;【欄位驗證】&#xa;◆ 類別代碼: 必填,1-2位英文字母,不可重複&#xa;◆ 類別名稱: 必填,100字以內&#xa;◆ 項目代碼: 必填,通常為3位數字,同類別內不可重複&#xa;◆ 項目名稱: 必填,100字以內&#xa;◆ 編碼長度: 選填,數字,範圍1-10,預設=3&#xa;◆ 起始編號: 選填,數字,大於0,預設=1&#xa;&#xa;【特殊說明】&#xa;- 編碼原則建立後,資產建立時會依此原則自動產生資產編號&#xa;- 編碼長度決定流水號之位數,修改後僅影響新產生之資產編號&#xa;- 目前編號會隨著產生資產編號而遞增,無法手動修改&#xa;- 停用之類別或項目,不可用於新資產編碼,但不影響已建立之資產" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="business_rules">
+          <mxGeometry y="30" width="800" height="640" as="geometry" />
+        </mxCell>
+
+        <!-- 關聯線 -->
+        <!-- coding_categories -> coding_items -->
+        <mxCell id="rel1" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;" edge="1" parent="1" source="coding_categories" target="coding_items">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel1_label" value="1 : N&#xa;類別項目" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel1">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- coding_categories -> coding_samples -->
+        <mxCell id="rel2" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="coding_categories" target="coding_samples">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="165"/>
+              <mxPoint x="780" y="160"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel2_label" value="1 : N&#xa;範例" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel2">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- coding_items -> coding_samples -->
+        <mxCell id="rel3" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="coding_items" target="coding_samples">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel3_label" value="1 : N&#xa;範例" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel3">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

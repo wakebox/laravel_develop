@@ -1,0 +1,118 @@
+<mxfile host="app.diagrams.net" modified="2026-01-27T00:00:00.000Z" agent="5.0" version="24.0.0" etag="drawio-er-month-end-transfer">
+  <diagram name="資產月結拋轉作業 ER Model" id="er-diagram-month-end-transfer">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- 標題 -->
+        <mxCell id="title" value="資產月結拋轉作業 ER Model" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="450" y="20" width="700" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 資產每月攤提明細表 -->
+        <mxCell id="depreciation_details" value="pc_asset_monthly_depreciation_details (每月攤提明細)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="320" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="depreciation_details_fields" value="PK  id: bigint (主鍵)&#xa;FK  asset_id: bigint 資產ID*&#xa;    depreciation_month: varchar(10) 折舊年月*&#xa;    cost_total: bigint 成本總額&#xa;    monthly_amortization: bigint 每月攤提*&#xa;       (分攤金額)&#xa;    accumulated_depreciation: bigint 累積折舊&#xa;FK  department_id: bigint 折舊部門*&#xa;FK  depreciation_category: varchar(50) 折舊科目*&#xa;FK  cumulative_category: varchar(50) 累積折舊科目*&#xa;    closed_flag: char(1) 月結註記 (Y/N)&#xa;       (拋轉後回寫為Y)&#xa;    transfer_status: char(1) 傳票拋轉狀態 (Y/N)&#xa;       (取得時為N,拋轉後更新為Y)&#xa;    created_at: timestamp&#xa;    updated_at: timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="depreciation_details">
+          <mxGeometry y="30" width="320" height="270" as="geometry" />
+        </mxCell>
+
+        <!-- 資產折舊傳票維護單頭 -->
+        <mxCell id="voucher_header" value="pc_asset_depreciation_voucher (折舊傳票維護單頭)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="550" y="100" width="320" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="voucher_header_fields" value="PK  id: bigint (主鍵)&#xa;UK  voucher_month: varchar(10) 資產折舊年月*&#xa;       (依月結拋轉作業指定之年月)&#xa;UK  document_number: varchar(50) 單據編號*&#xa;       (月結作業編碼,RD補充)&#xa;    voucher_number: varchar(50) 傳票號碼&#xa;       (預留欄位,後續透過Pro OA傳票作業回寫)&#xa;    document_date: date 單據日期*&#xa;       (預設=資產折舊年月之最後一天,可自行挑選)&#xa;    created_at: timestamp&#xa;    updated_at: timestamp&#xa;&#xa;【說明】&#xa;- 由資產月結拋轉作業自動產生&#xa;- 每個折舊年月僅產生一筆單頭&#xa;- 不允許重複產生同年月之傳票" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="voucher_header">
+          <mxGeometry y="30" width="320" height="230" as="geometry" />
+        </mxCell>
+
+        <!-- 資產折舊傳票維護單身 -->
+        <mxCell id="voucher_details" value="pc_asset_depreciation_voucher_details (折舊傳票維護單身)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="100" width="340" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="voucher_details_fields" value="PK  id: bigint (主鍵)&#xa;FK  voucher_id: bigint 折舊傳票維護單頭ID*&#xa;    serial_number: int 序號 (系統自動流水號)&#xa;    debit_credit: char(1) 借/貸*&#xa;       D=借方(資產之折舊科目)&#xa;       C=貸方(資產之累積折舊科目)&#xa;FK  account_subject_id: bigint 科目ID*&#xa;    account_subject_code: varchar(20) 科目編號*&#xa;    account_subject_name: varchar(100) 科目名稱*&#xa;FK  department_id: bigint 部門ID&#xa;    amount: bigint 金額*&#xa;       (依該科目+部門累計之金額)&#xa;    created_at: timestamp&#xa;    updated_at: timestamp&#xa;&#xa;【計算邏輯】&#xa;◆ 借方:&#xa;  - 依資產折舊科目編號+部門進行彙總&#xa;&#xa;◆ 貸方:&#xa;  - 依資產累折科目編號+部門進行彙總&#xa;  - 通常累折科目不會做部門管理&#xa;&#xa;【排序】&#xa;- 借方在上,貸方在下&#xa;- 依科目編號進行排序" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="voucher_details">
+          <mxGeometry y="30" width="340" height="330" as="geometry" />
+        </mxCell>
+
+        <!-- OA部門主檔 -->
+        <mxCell id="departments" value="sc_departments (OA部門主檔)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="450" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="departments_fields" value="PK  id: bigint&#xa;    code: varchar(20) 部門編號&#xa;    name: varchar(100) 部門名稱&#xa;    created_at: timestamp&#xa;    updated_at: timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="departments">
+          <mxGeometry y="30" width="220" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- OA會計科目主檔 -->
+        <mxCell id="account_subjects" value="sc_account_subjects (OA會計科目主檔)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="400" y="450" width="240" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="account_subjects_fields" value="PK  id: bigint&#xa;    code: varchar(20) 科目代碼&#xa;    name: varchar(100) 科目名稱&#xa;    type: varchar(20) 科目類型&#xa;    created_at: timestamp&#xa;    updated_at: timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="account_subjects">
+          <mxGeometry y="30" width="240" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- 業務規則說明 -->
+        <mxCell id="business_rules" value="【業務規則說明】" style="swimlane;fontStyle=1;align=left;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="700" y="500" width="640" height="580" as="geometry" />
+        </mxCell>
+        <mxCell id="business_rules_content" value="【作業目的】&#xa;統計一個年月內之折舊金額,並拋轉月結作業&#xa;&#xa;【作業流程】&#xa;1. 輸入資產折舊年月(必填,格式:114/10)&#xa;2. 點擊「折舊資料取得」按鈕&#xa;3. 系統至「資產每月攤提修改作業」取得符合年月之所有資產折舊內容&#xa;4. 顯示於列表中供確認&#xa;5. 點擊「折舊資料拋轉」按鈕&#xa;6. 系統產生「資產折舊傳票維護作業」資料&#xa;&#xa;【按鈕處理:折舊資料取得】&#xa;根據表頭資產折舊年月,至「資產每月攤提修改作業」中,取得符合年月條件之所有資產之折舊內容&#xa;&#xa;列表欄位:&#xa;- 序號: 系統自動賦予流水號&#xa;- 資產編號: 唯讀,依符合條件之資產取得其資產編號&#xa;- 資產名稱: 唯讀,依資產編號關聯資產基本檔取得資產名稱&#xa;- 科目編號: 唯讀,依符合條件之資產關聯資產基本檔取得折舊科目&#xa;- 科目名稱: 唯讀,依折舊科目關聯科目檔取得科目名稱&#xa;- 部門: 唯讀,依「資產每月攤提修改作業」中之折舊部門&#xa;- 分攤金額: 唯讀,依「資產每月攤提修改作業」中之每月攤提金額&#xa;- 傳票拋轉狀態: 唯讀,取得時皆為N(未拋轉),拋轉後更新為Y(已拋轉)&#xa;&#xa;【按鈕處理:折舊資料拋轉】&#xa;點擊折舊資料拋轉後,需根據明細產生傳票維護作業內容&#xa;&#xa;◆ 公式與邏輯:&#xa;  - 借方: 依資產折舊科目編號+部門進行彙總&#xa;  - 貸方: 依資產累折科目編號+部門進行彙總(通常累折科目不會做部門管理)&#xa;&#xa;◆ 拋轉限制:&#xa;  - 若折舊傳票維護作業中,已有當前指定年月之傳票內容,不允許重複產生&#xa;  - 系統需檢查是否已存在相同折舊年月的傳票&#xa;&#xa;◆ 拋轉後存檔處理:&#xa;  - 拋轉後,需根據資產編號+折舊年月至「資產每月攤提修改作業」中&#xa;  - 將對應之資產+折舊年月之月結註記回寫為Y&#xa;  - 將傳票拋轉狀態更新為Y(已拋轉)&#xa;&#xa;【單頭欄位】&#xa;- 資產折舊年月: 依「資產月結拋轉作業」中指定之資產折舊年月賦予&#xa;- 單據編號: 月結作業編碼(RD補充)&#xa;- 傳票號碼: 預留欄位,後續透過Pro OA傳票作業回寫&#xa;- 單據日期: 下拉式選單,產生時預設=資產折舊年月指定年月之最後一天,使用者可自行挑選&#xa;&#xa;【單身欄位】&#xa;- 序號: 系統自動賦予流水號&#xa;- 借/貸: 借方=資產之折舊科目, 貸方=資產之累積折舊科目&#xa;- 科目編號: 借方=資產之折舊科目, 貸方=資產之累積折舊科目&#xa;- 科目名稱: 依科目名稱&#xa;- 金額: 依該科目+部門累計之金額&#xa;- 借方金額合計: 合計之借方金額&#xa;- 貸方金額合計: 合計之貸方金額&#xa;&#xa;排序: 借方在上,貸方在下,依科目編號進行排序&#xa;&#xa;拋轉後需將明細之傳票拋轉狀態更新為Y(已拋轉)&#xa;&#xa;【按鈕處理:傳票資料迴轉】&#xa;點擊迴轉後,需彈出提示訊息: 「迴轉後當月折舊資料需重新產生,是否確定迴轉?」&#xa;&#xa;若點擊是:&#xa;- 需將當前年月折舊資料刪除&#xa;- 將資產傳票拋轉作業單身之所有傳票拋轉狀態更新為N(未拋轉)&#xa;&#xa;迴轉後存檔處理:&#xa;- 迴轉後,需根據資產編號+折舊年月至「資產每月攤提修改作業」中&#xa;- 將對應之資產+折舊年月之月結註記回寫為N&#xa;&#xa;【特殊說明】&#xa;2025/12/30資產例會決議:&#xa;- 月結拋轉作業不做批次月結功能&#xa;- 但需要開放超級使用者權限&#xa;- 可批次將一定區間內之資產進行批次月結動作(不需拋轉月結維護作業)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="business_rules">
+          <mxGeometry y="30" width="640" height="550" as="geometry" />
+        </mxCell>
+
+        <!-- 關聯線 -->
+        <!-- depreciation_details -> voucher_details -->
+        <mxCell id="rel1" value="" style="endArrow=ERone;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=ERmany;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="depreciation_details" target="voucher_details">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="250"/>
+              <mxPoint x="900" y="280"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel1_label" value="N : 1&#xa;產生傳票" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel1">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- voucher_header -> voucher_details -->
+        <mxCell id="rel2" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;" edge="1" parent="1" source="voucher_header" target="voucher_details">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel2_label" value="1 : N&#xa;單頭單身" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel2">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- departments -> depreciation_details -->
+        <mxCell id="rel3" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="departments" target="depreciation_details">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="210" y="325"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel3_label" value="1 : N&#xa;折舊部門" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel3">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="-15" y="-5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- account_subjects -> depreciation_details -->
+        <mxCell id="rel4" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="account_subjects" target="depreciation_details">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="520"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel4_label" value="1 : N&#xa;折舊科目" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel4">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="-5" y="15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

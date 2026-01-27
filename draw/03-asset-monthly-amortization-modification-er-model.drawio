@@ -1,0 +1,102 @@
+<mxfile host="app.diagrams.net" modified="2026-01-27T00:00:00.000Z" agent="5.0" version="24.0.0" etag="drawio-er-monthly-amortization">
+  <diagram name="資產每月攤提修改作業 ER Model" id="er-diagram-monthly-amortization">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- 標題 -->
+        <mxCell id="title" value="資產每月攤提修改作業 ER Model (03_SA)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="450" y="20" width="700" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 固定資產主表 pc_fixed_assets -->
+        <mxCell id="fixed_assets" value="pc_fixed_assets (固定資產主表)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="280" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_fields" value="PK  id: bigint (主鍵)&#xa;UK  asset_number: varchar(50) 財產編號*&#xa;    asset_name: varchar(200) 財產名稱*&#xa;    asset_spec: varchar(500) 資產規格&#xa;    acquisition_price: bigint 取得成本*&#xa;    budget_source: bigint 預留殘值&#xa;    start_date: varchar(10) 開始提列年月* (110/09)&#xa;    useful_life_months: int 耐用年限_個月*&#xa;    used_life_months: int 續用年限_個月&#xa;&#xa;    created_at: timestamp 建立時間&#xa;    updated_at: timestamp 更新時間&#xa;    deleted_at: timestamp 刪除時間" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="30" width="280" height="250" as="geometry" />
+        </mxCell>
+
+        <!-- 資產每月攤提修改作業主表 pc_asset_monthly_depreciation -->
+        <mxCell id="monthly_depreciation" value="pc_asset_monthly_depreciation (每月攤提主表)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="500" y="100" width="300" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="monthly_depreciation_fields" value="PK  id: bigint (主鍵)&#xa;FK  asset_id: bigint 資產ID*&#xa;UK  asset_number: varchar(50) 財產編號*&#xa;    asset_name: varchar(200) 財產名稱 (唯讀)&#xa;    asset_spec: varchar(500) 資產規格 (唯讀)&#xa;    budget_source: bigint 預留殘值 (唯讀)&#xa;    created_at: timestamp 建立時間&#xa;    updated_at: timestamp 更新時間&#xa;&#xa;【說明】&#xa;- 每個資產僅產生一次單頭記錄&#xa;- 由攤提折舊作業自動產生&#xa;- 本作業僅提供單身修改,不提供單頭/單身新增" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="monthly_depreciation">
+          <mxGeometry y="30" width="300" height="210" as="geometry" />
+        </mxCell>
+
+        <!-- 資產每月攤提明細表 pc_asset_monthly_depreciation_details -->
+        <mxCell id="depreciation_details" value="pc_asset_monthly_depreciation_details (每月攤提明細)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="920" y="100" width="300" height="440" as="geometry" />
+        </mxCell>
+        <mxCell id="depreciation_details_fields" value="PK  id: bigint (主鍵)&#xa;FK  monthly_depreciation_id: bigint 每月攤提主表ID*&#xa;FK  asset_id: bigint 資產ID*&#xa;    depreciation_month: varchar(10) 折舊年月* (唯讀)&#xa;    cost_total: bigint 成本總額&#xa;    monthly_amortization: bigint 每月攤提*&#xa;       (可修改,但月結註記=Y時不可修改)&#xa;    accumulated_depreciation: bigint 累積折舊&#xa;       (由第一個折舊年月逐步遞增)&#xa;FK  department_id: bigint 折舊部門*&#xa;    closed_flag: char(1) 月結註記 (Y/N) (唯讀)&#xa;    created_at: timestamp 建立時間&#xa;    updated_at: timestamp 更新時間&#xa;&#xa;【計算公式】&#xa;- 成本總額 = 資產取得成本&#xa;- 每月攤提 = (成本總額-預留殘值)/耐用年限&#xa;- 累積折舊 = 從第一個折舊年月逐月累加&#xa;&#xa;【修改規則】&#xa;- 折舊年月: 唯讀,由系統產生&#xa;- 每月攤提: 月結註記=N可修改, =Y不可修改&#xa;- 月結註記: 唯讀,由資產月結作業回寫&#xa;&#xa;【說明】&#xa;- 由攤提折舊作業根據續用年限自動產生&#xa;- 產生筆數 = 折舊年月 + 續用年限推算" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="depreciation_details">
+          <mxGeometry y="30" width="300" height="410" as="geometry" />
+        </mxCell>
+
+        <!-- OA部門主檔 sc_departments -->
+        <mxCell id="departments" value="sc_departments (OA部門主檔)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="920" y="580" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="departments_fields" value="PK  id: bigint&#xa;    code: varchar(20) 部門編號&#xa;    name: varchar(100) 部門名稱&#xa;    created_at: timestamp&#xa;    updated_at: timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="departments">
+          <mxGeometry y="30" width="220" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- 業務規則說明 -->
+        <mxCell id="business_rules" value="【業務規則說明】" style="swimlane;fontStyle=1;align=left;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="420" width="680" height="480" as="geometry" />
+        </mxCell>
+        <mxCell id="business_rules_content" value="【作業目的】&#xa;建立固定資產每月折舊資料,後續拋轉財務折舊傳票依此數據進行拋轉&#xa;&#xa;【作業特性】&#xa;◆ 本作業僅提供單身資料修改功能&#xa;◆ 不提供自行新增每月攤提數據功能&#xa;◆ 所有數據來源皆須透過攤提折舊作業產生&#xa;&#xa;【單頭欄位規則】&#xa;- 財產編號: 必填,可下拉選單或開窗查詢&#xa;- 資產名稱: 唯讀,根據財產編號關聯資產基本檔取得&#xa;- 資產規格: 唯讀,根據財產編號關聯資產基本檔取得&#xa;- 預留殘值: 唯讀,根據財產編號關聯資產基本檔取得&#xa;&#xa;【單身欄位規則】&#xa;◆ 折舊年月:&#xa;  - 唯讀,由系統產生&#xa;  - 根據折舊年月+續用年限推算產生筆數&#xa;  - 範例: 折舊年月=114/11, 續用年限=12個月&#xa;  - 則產生: 114/12, 115/01, 115/02...115/11 共12筆&#xa;&#xa;◆ 成本總額:&#xa;  - 依該資產於資產建立作業中對應之取得成本&#xa;&#xa;◆ 每月攤提:&#xa;  - 計算公式: (成本總額-預留殘值)/耐用年限, 四捨五入到整數位&#xa;  - 若該月之月結註記=N, 可自行調整每月攤提金額&#xa;  - 若月結註記=Y, 則無法進行每月攤提金額之修改&#xa;&#xa;◆ 累積折舊:&#xa;  - 由第一個折舊年月+每月攤提逐步遞增&#xa;  - 如: 第1月累折=每月攤提, 第2月累折=第1月累折+每月攤提...&#xa;&#xa;◆ 折舊部門:&#xa;  - 依攤提折舊作業中指定之部門&#xa;&#xa;◆ 月結註記:&#xa;  - 唯讀欄位&#xa;  - 後續透過資產月結作業回寫&#xa;  - N=未月結(可修改), Y=已月結(不可修改)&#xa;&#xa;【資料產生邏輯】&#xa;1. 每個資產僅會產生一次每月攤提折舊單頭&#xa;2. 單身筆數根據折舊年月+續用年限推算&#xa;3. 所有數據由攤提折舊作業自動產生&#xa;4. 使用者只能修改單身的每月攤提金額(月結註記=N時)&#xa;&#xa;【資料修改限制】&#xa;- 月結註記=Y的記錄不可修改&#xa;- 只能修改每月攤提金額,其他欄位唯讀&#xa;- 累積折舊會根據每月攤提自動重新計算" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="business_rules">
+          <mxGeometry y="30" width="680" height="450" as="geometry" />
+        </mxCell>
+
+        <!-- 關聯線 -->
+        <!-- fixed_assets -> monthly_depreciation -->
+        <mxCell id="rel1" value="" style="endArrow=ERone;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;" edge="1" parent="1" source="fixed_assets" target="monthly_depreciation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel1_label" value="1 : 1&#xa;產生單頭" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel1">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- monthly_depreciation -> depreciation_details -->
+        <mxCell id="rel2" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;" edge="1" parent="1" source="monthly_depreciation" target="depreciation_details">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel2_label" value="1 : N&#xa;折舊明細" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel2">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- fixed_assets -> depreciation_details -->
+        <mxCell id="rel3" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="fixed_assets" target="depreciation_details">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="850" y="170"/>
+              <mxPoint x="850" y="210"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel3_label" value="1 : N&#xa;直接關聯" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel3">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- departments -> depreciation_details -->
+        <mxCell id="rel4" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;" edge="1" parent="1" source="departments" target="depreciation_details">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel4_label" value="1 : N&#xa;折舊部門" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel4">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="15" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

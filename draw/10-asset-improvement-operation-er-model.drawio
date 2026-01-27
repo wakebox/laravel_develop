@@ -1,0 +1,92 @@
+<mxfile host="app.diagrams.net" modified="2026-01-27T00:00:00.000Z" agent="5.0" version="24.0.0" etag="drawio-er-asset-improvement">
+  <diagram name="資產改良作業 ER Model" id="er-diagram-asset-improvement">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- 標題 -->
+        <mxCell id="title" value="資產改良作業 ER Model" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="520" y="20" width="560" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 固定資產主表 -->
+        <mxCell id="fixed_assets" value="pc_fixed_assets (固定資產主表)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="300" height="340" as="geometry" />
+        </mxCell>
+        <mxCell id="fixed_assets_fields" value="PK  id: bigint (主鍵)&#xa;UK  asset_number: varchar(50) 財產編號*&#xa;    asset_name: varchar(200) 財產名稱*&#xa;    asset_spec: varchar(500) 資產規格&#xa;    cost_not_depreciated: bigint 成本總額*&#xa;       (需加上增添改良之金額)&#xa;    budget_source: bigint 預留殘值&#xa;    add_amount: bigint 增添改良&#xa;       (累加形式,可多次改良逐步加總)&#xa;    add_date: date 增添改良日期&#xa;       (存入最新一筆改良日期)&#xa;    used_life_months: int 續用年限_個月&#xa;       (需加上改良後續用年限)&#xa;    extension: tinyint 抵押狀態&#xa;    stock_value: int 庫存數量&#xa;    initial_quantity: tinyint 列管/列帳*&#xa;    created_at: timestamp&#xa;    updated_at: timestamp&#xa;    deleted_at: timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="fixed_assets">
+          <mxGeometry y="30" width="300" height="310" as="geometry" />
+        </mxCell>
+
+        <!-- 資產改良作業表 -->
+        <mxCell id="improvement" value="pc_asset_improvement (資產改良作業)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="520" y="100" width="300" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="improvement_fields" value="PK  id: bigint (主鍵)&#xa;UK  improvement_number: varchar(50) 改良單號*&#xa;       (系統自動賦予,依OA3.0單據架構)&#xa;FK  asset_id: bigint 資產ID*&#xa;    asset_number: varchar(50) 財產編號*&#xa;    asset_name: varchar(200) 財產名稱 (唯讀)&#xa;    asset_spec: varchar(500) 資產規格 (唯讀)&#xa;    improvement_date: date 改良日期*&#xa;    improvement_reason: text 改良原因*&#xa;    improvement_cost: bigint 改良成本*&#xa;       (只允許輸入正整數)&#xa;    improvement_life_months: int 改良後續用年限&#xa;       (只允許輸入正整數)&#xa;    change_residual_value: bigint 增減預留殘值&#xa;       (只允許輸入正or負整數)&#xa;    created_at: timestamp 建立時間&#xa;    updated_at: timestamp 更新時間&#xa;    deleted_at: timestamp 刪除時間&#xa;&#xa;【說明】&#xa;- 改良後需回寫資產基本檔多個欄位&#xa;- 成本總額累加、續用年限累加、增添改良累加" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="improvement">
+          <mxGeometry y="30" width="300" height="370" as="geometry" />
+        </mxCell>
+
+        <!-- 異動記錄明細表 -->
+        <mxCell id="transaction_details" value="pc_asset_transaction_details (異動記錄明細)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="930" y="100" width="300" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="transaction_details_fields" value="PK  id: bigint (主鍵)&#xa;FK  asset_id: bigint 資產ID*&#xa;    serial_number: int 序號 (系統自動流水編號)&#xa;    type: tinyint 異動類型*&#xa;       5=改良&#xa;FK  keeper_id: bigint 保管人 (舊保管人)&#xa;    transaction_quantity: int 異動數量&#xa;       (依資產數量)&#xa;    transaction_amount: varchar(100) 異動金額&#xa;       (資產改良單Link)&#xa;    transaction_date: date 異動時間*&#xa;       (依系統時間寫入)&#xa;    created_at: timestamp 建立時間&#xa;    updated_at: timestamp 更新時間&#xa;&#xa;【說明】&#xa;- 改良作業完成後自動建立異動記錄&#xa;- 異動類型固定為5(改良)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="transaction_details">
+          <mxGeometry y="30" width="300" height="290" as="geometry" />
+        </mxCell>
+
+        <!-- OA員工主檔 -->
+        <mxCell id="users" value="sc_users (OA員工主檔)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="930" y="460" width="220" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="users_fields" value="PK  id: bigint&#xa;    employee_id: varchar(20) 員工編號&#xa;    name: varchar(100) 員工姓名&#xa;FK  department_id: bigint 部門ID&#xa;    created_at: timestamp&#xa;    updated_at: timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="users">
+          <mxGeometry y="30" width="220" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- 業務規則說明 -->
+        <mxCell id="business_rules" value="【業務規則說明】" style="swimlane;fontStyle=1;align=left;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="500" width="720" height="580" as="geometry" />
+        </mxCell>
+        <mxCell id="business_rules_content" value="【作業目的】&#xa;固定資產改良功能,透過資產改良單影響改良金額及續用年限&#xa;&#xa;【欄位說明】&#xa;◆ 財產編號:&#xa;  - 必填欄位,下拉式選單&#xa;  - 需過濾以下條件:&#xa;    1. 不能為非列帳資產(即資產列管/列帳=2)&#xa;    2. 該資產之抵押狀態不能為2(已抵押)&#xa;    3. 該資產之庫存數量=0&#xa;&#xa;◆ 資產名稱:&#xa;  - 唯讀欄位&#xa;  - 根據選擇之財產編號帶出其資產名稱&#xa;&#xa;◆ 資產規格:&#xa;  - 唯讀欄位&#xa;  - 根據選擇之財產編號帶出其資產規格&#xa;&#xa;◆ 改良日期:&#xa;  - 必填欄位,萬年曆選單&#xa;&#xa;◆ 改良單號:&#xa;  - 無法編輯,系統自動賦予&#xa;  - 編碼原則: 請依OA3.0單據架構設計(RD補充)&#xa;&#xa;◆ 改良原因:&#xa;  - 必填欄位&#xa;  - 使用者自行輸入改良原因&#xa;&#xa;【改良區欄位說明】&#xa;◆ 改良成本:&#xa;  - 必填欄位&#xa;  - 只允許輸入正整數&#xa;&#xa;◆ 改良後續用年限:&#xa;  - 只允許輸入正整數&#xa;  - 此值會加到資產基本檔的續用年限上&#xa;&#xa;◆ 增減預留殘值:&#xa;  - 只允許輸入正or負整數&#xa;  - 可增加或減少預留殘值&#xa;&#xa;【存檔處理】&#xa;資產基本檔需更新以下欄位:&#xa;&#xa;◆ 成本總額:&#xa;  - 需加上增添改良之金額&#xa;  - 公式: 原成本總額 + 改良成本&#xa;&#xa;◆ 續用年限:&#xa;  - 需加上改良後續用年限&#xa;  - 公式: 原續用年限 + 改良後續用年限&#xa;&#xa;◆ 增添改良:&#xa;  - 存入改良單之改良成本&#xa;  - 此欄位為累加形式&#xa;  - 資產可以經過多次改良&#xa;  - 根據每一次改良成本逐步加總(從0開始加)&#xa;  - 公式: 原增添改良 + 改良成本&#xa;&#xa;◆ 增添日期:&#xa;  - 存入最新一筆改良日期&#xa;  - 每次改良都更新此欄位&#xa;&#xa;【異動記錄欄位說明】&#xa;改良完成後需新增異動記錄:&#xa;&#xa;- 序號: 系統自動流水編號賦予&#xa;- 異動類型: 改良&#xa;- 保管人: 舊保管人&#xa;- 異動數量: 依資產數量&#xa;- 異動金額: 資產改良單Link&#xa;- 異動時間: 依系統時間寫入&#xa;&#xa;【OA列表欄位】&#xa;- 財產編號: 依資產基本資訊之財產編號&#xa;- 財產名稱: 依資產基本資訊之財產名稱&#xa;- 改良單號: 依改良單之改良單號&#xa;- 改良日期: 依改良單之改良日期&#xa;&#xa;【查詢條件】&#xa;- 財產編號: 可依財產編號模糊搜尋&#xa;- 財產名稱: 可依財產名稱模糊搜尋&#xa;- 改良單號: 依改良單之改良單號&#xa;- 改良日期: 依改良單之改良日期&#xa;&#xa;【欄位驗證規則】&#xa;- 財產編號: 必填,需符合過濾條件&#xa;- 改良日期: 必填,日期格式&#xa;- 改良原因: 必填&#xa;- 改良成本: 必填,正整數&#xa;- 改良後續用年限: 選填,正整數&#xa;- 增減預留殘值: 選填,正或負整數&#xa;&#xa;【業務限制】&#xa;- 已抵押的資產不能進行改良&#xa;- 列管不列帳的資產不能進行改良&#xa;- 庫存數量為0的資產不能進行改良" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="business_rules">
+          <mxGeometry y="30" width="720" height="550" as="geometry" />
+        </mxCell>
+
+        <!-- 關聯線 -->
+        <!-- fixed_assets -> improvement -->
+        <mxCell id="rel1" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;" edge="1" parent="1" source="fixed_assets" target="improvement">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel1_label" value="1 : N&#xa;改良記錄" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel1">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- fixed_assets -> transaction_details -->
+        <mxCell id="rel2" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;" edge="1" parent="1" source="fixed_assets" target="transaction_details">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="850" y="185"/>
+              <mxPoint x="850" y="260"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel2_label" value="1 : N&#xa;異動記錄" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel2">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- users -> transaction_details (保管人) -->
+        <mxCell id="rel3" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=ERone;startFill=0;endFill=0;dashed=1;" edge="1" parent="1" source="users" target="transaction_details">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel3_label" value="1 : N&#xa;保管人" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="rel3">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="15" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
