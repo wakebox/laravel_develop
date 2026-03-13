@@ -9,6 +9,16 @@
 
 - 遵循 clear archetecture 的規則建立架構，如後端階層，controller , service , repository , model
 - 檔案結構 - 依照模組區分目錄
+- 產生controller 時，成功的response 使用自定義的 successResponse ，如   
+
+'''
+return $this->successResponse(CategoryResource::collection($categorys));
+'''
+錯誤時，使用自定義的 errorResponse ，如
+
+'''
+return $this->errorResponse('Category not found', 404);
+'''
 
 
 # 任務

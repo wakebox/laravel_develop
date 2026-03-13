@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>登入 | 資產管理系統</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <main class="login-page">
+        <section class="login-hero">
+            <p class="eyebrow">固定資產管理</p>
+            <h1>資產管理系統</h1>
+            <p>請使用公司帳號登入，進入資產資料建立與後續作業流程。</p>
+            <div class="panel">
+                <div class="panel-title">今日提醒</div>
+                <p>02/06 資產新增審核 3 筆待處理，請於今日完成。</p>
+            </div>
+        </section>
+
+        <section class="login-card">
+            <div>
+                <p class="eyebrow">Welcome Back</p>
+                <h2>登入系統</h2>
+                <p class="subtitle">輸入帳號密碼後即可進入。</p>
+            </div>
+            <form class="login-form" action="index.html">
+                <label class="field">
+                    <div class="label">帳號</div>
+                    <input type="text" placeholder="請輸入公司帳號" />
+                </label>
+                <label class="field">
+                    <div class="label">密碼</div>
+                    <input type="password" placeholder="請輸入密碼" />
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" />
+                    記住我
+                </label>
+                <button class="btn primary" type="submit">登入</button>
+                <div class="login-actions">
+                    <span>忘記密碼？</span>
+                    <a href="index.html">進入資產頁示意</a>
+                </div>
+            </form>
+            <div class="login-footer">如需權限申請，請聯繫資訊部。</div>
+        </section>
+    </main>
+</body>
+
+</html>
